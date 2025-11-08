@@ -1,11 +1,540 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Seu Plano de Emagrecimento Personalizado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin: 30px 0 15px 0;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #667eea;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .results {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .exercise-item, .meal-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #764ba2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .exercise-item strong, .meal-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-box h4 {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .stat-box p {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tip {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>💪 Seu Plano Personalizado de Emagrecimento</h1>
+        
+        <div id="formSection">
+            <div class="intro">
+                <p>Bem-vindo! Vamos criar um plano personalizado de emagrecimento saudável baseado em suas características individuais.</p>
+            </div>
+
+            <form id="userForm">
+                <div class="form-group">
+                    <label for="gender">Sexo:</label>
+                    <select id="gender" required>
+                        <option value="">Selecione...</option>
+                        <option value="male">Masculino</option>
+                        <option value="female">Feminino</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Idade (anos):</label>
+                    <input type="number" id="age" min="15" max="100" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">Peso atual (kg):</label>
+                    <input type="number" id="weight" min="30" max="300" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="height">Altura (cm):</label>
+                    <input type="number" id="height" min="100" max="250" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="activity">Nível de atividade física atual:</label>
+                    <select id="activity" required>
+                        <option value="">Selecione...</option>
+                        <option value="sedentary">Sedentário (pouco ou nenhum exercício)</option>
+                        <option value="light">Levemente ativo (exercício leve 1-3 dias/semana)</option>
+                        <option value="moderate">Moderadamente ativo (exercício moderado 3-5 dias/semana)</option>
+                        <option value="active">Muito ativo (exercício intenso 6-7 dias/semana)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="goal">Meta de peso (kg):</label>
+                    <input type="number" id="goal" min="30" max="300" step="0.1" required>
+                </div>
+
+                <button type="submit">Gerar Meu Plano Personalizado</button>
+            </form>
+        </div>
+
+        <div id="results" class="results"></div>
+    </div>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generatePlan();
+        });
+
+        function generatePlan() {
+            const gender = document.getElementById('gender').value;
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseInt(document.getElementById('height').value);
+            const activity = document.getElementById('activity').value;
+            const goalWeight = parseFloat(document.getElementById('goal').value);
+
+            // Cálculos
+            const heightM = height / 100;
+            const bmi = weight / (heightM * heightM);
+            const weightToLose = weight - goalWeight;
+            
+            // TMB (Taxa Metabólica Basal) - Fórmula de Mifflin-St Jeor
+            let bmr;
+            if (gender === 'male') {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+
+            // TDEE (Gasto Calórico Total Diário)
+            const activityMultipliers = {
+                sedentary: 1.2,
+                light: 1.375,
+                moderate: 1.55,
+                active: 1.725
+            };
+            const tdee = bmr * activityMultipliers[activity];
+            
+            // Déficit calórico saudável (500-750 kcal/dia para perder 0.5-1kg/semana)
+            const calorieDeficit = weightToLose > 10 ? 750 : 500;
+            const targetCalories = Math.round(tdee - calorieDeficit);
+            
+            // Estimativa de tempo
+            const weeksToGoal = Math.ceil(weightToLose / 0.75); // 0.5-1kg por semana é saudável
+            
+            // Classificação do IMC
+            let bmiCategory;
+            if (bmi < 18.5) bmiCategory = "Abaixo do peso";
+            else if (bmi < 25) bmiCategory = "Peso normal";
+            else if (bmi < 30) bmiCategory = "Sobrepeso";
+            else if (bmi < 35) bmiCategory = "Obesidade Grau I";
+            else if (bmi < 40) bmiCategory = "Obesidade Grau II";
+            else bmiCategory = "Obesidade Grau III";
+
+            // Distribuição de macronutrientes
+            const protein = Math.round(weight * 2); // 2g por kg (para preservar massa muscular)
+            const fat = Math.round(targetCalories * 0.25 / 9); // 25% das calorias em gordura
+            const carbs = Math.round((targetCalories - (protein * 4) - (fat * 9)) / 4);
+
+            // Gerar plano de treino baseado no nível de condicionamento
+            const workoutPlan = generateWorkoutPlan(activity, bmi);
+            
+            // Gerar plano alimentar
+            const mealPlan = generateMealPlan(targetCalories, protein, carbs, fat);
+
+            // Exibir resultados
+            displayResults({
+                bmi, bmiCategory, weightToLose, weeksToGoal,
+                targetCalories, protein, carbs, fat,
+                workoutPlan, mealPlan, tdee
+            });
+        }
+
+        function generateWorkoutPlan(activityLevel, bmi) {
+            let intensity = 'beginner';
+            if (activityLevel === 'moderate' || activityLevel === 'active') {
+                intensity = 'intermediate';
+            }
+            if (bmi > 35) {
+                intensity = 'beginner'; // Começar devagar para evitar lesões
+            }
+
+            const plans = {
+                beginner: {
+                    cardio: [
+                        { name: "Caminhada rápida", duration: "30 minutos", frequency: "5x por semana", notes: "Comece devagar e aumente gradualmente" },
+                        { name: "Bicicleta ergométrica", duration: "20-25 minutos", frequency: "3x por semana", notes: "Baixa intensidade, ritmo confortável" },
+                        { name: "Natação leve", duration: "20 minutos", frequency: "2x por semana", notes: "Excelente para quem tem problemas articulares" }
+                    ],
+                    strength: [
+                        { name: "Agachamento livre ou na parede", reps: "3 séries de 10-12 repetições", notes: "Fortalece pernas e glúteos" },
+                        { name: "Flexão de braço (joelhos apoiados)", reps: "3 séries de 8-10 repetições", notes: "Trabalha peito, ombros e tríceps" },
+                        { name: "Prancha isométrica", reps: "3 séries de 20-30 segundos", notes: "Fortalece o core" },
+                        { name: "Elevação de panturrilha", reps: "3 séries de 15 repetições", notes: "Fortalece as panturrilhas" },
+                        { name: "Rosca direta com garrafa de água", reps: "3 séries de 12 repetições", notes: "Trabalha os bíceps" }
+                    ]
+                },
+                intermediate: {
+                    cardio: [
+                        { name: "Corrida intervalada (HIIT)", duration: "25-30 minutos", frequency: "4x por semana", notes: "Alterne 1 min rápido com 2 min moderado" },
+                        { name: "Pular corda", duration: "15-20 minutos", frequency: "3x por semana", notes: "Excelente queimador de calorias" },
+                        { name: "Ciclismo intenso", duration: "35-40 minutos", frequency: "3x por semana", notes: "Varie a resistência" }
+                    ],
+                    strength: [
+                        { name: "Agachamento com peso", reps: "4 séries de 12-15 repetições", notes: "Use halteres ou barra" },
+                        { name: "Flexão de braço completa", reps: "4 séries de 12-15 repetições", notes: "Posição tradicional" },
+                        { name: "Afundo alternado", reps: "3 séries de 12 repetições cada perna", notes: "Trabalha pernas e equilíbrio" },
+                        { name: "Remada curvada", reps: "4 séries de 12 repetições", notes: "Fortalece as costas" },
+                        { name: "Prancha com elevação de perna", reps: "3 séries de 45 segundos", notes: "Core avançado" },
+                        { name: "Burpees", reps: "3 séries de 10 repetições", notes: "Exercício completo" }
+                    ]
+                }
+            };
+
+            return plans[intensity];
+        }
+
+        function generateMealPlan(calories, protein, carbs, fat) {
+            return {
+                breakfast: [
+                    "🥚 Ovos mexidos (2-3 unidades) com vegetais",
+                    "🍞 1-2 fatias de pão integral",
+                    "🥑 1/2 abacate",
+                    "☕ Café ou chá sem açúcar",
+                    "🍊 1 porção de fruta (laranja, maçã ou banana)"
+                ],
+                snack1: [
+                    "🥜 Mix de castanhas (30g)",
+                    "🍎 1 maçã ou pera",
+                    "Ou: Iogurte grego natural (170g) com frutas vermelhas"
+                ],
+                lunch: [
+                    "🍗 Proteína magra (150-200g): frango, peixe ou carne magra",
+                    "🍚 Carboidrato complexo (1 xícara): arroz integral, batata-doce ou quinoa",
+                    "🥗 Salada abundante com folhas verdes e legumes variados",
+                    "🫘 1 concha de feijão, lentilha ou grão-de-bico",
+                    "🥕 Legumes cozidos ou refogados",
+                    "🫒 1 colher de azeite extra virgem"
+                ],
+                snack2: [
+                    "🥤 Vitamina de frutas com whey protein ou leite",
+                    "Ou: 2 fatias de queijo branco com tomate",
+                    "Ou: Tapioca pequena com queijo cottage"
+                ],
+                dinner: [
+                    "🐟 Proteína magra (150g): peixe, frango ou tofu",
+                    "🥦 Grande porção de vegetais cozidos ou salada",
+                    "🍠 Carboidrato moderado (1/2 xícara): batata, arroz ou macarrão integral",
+                    "🫒 1 fio de azeite",
+                    "🥣 Opcional: sopa de legumes"
+                ],
+                snack3: [
+                    "🥛 Iogurte natural ou kefir",
+                    "Ou: Chá calmante",
+                    "Ou: Frutas com baixo índice glicêmico (morango, framboesa)"
+                ]
+            };
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            let html = `
+                <h2>📊 Suas Métricas</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <h4>IMC Atual</h4>
+                        <p>${data.bmi.toFixed(1)}</p>
+                        <small>${data.bmiCategory}</small>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Peso a Perder</h4>
+                        <p>${data.weightToLose.toFixed(1)} kg</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Tempo Estimado</h4>
+                        <p>${data.weeksToGoal}</p>
+                        <small>semanas</small>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Calorias Diárias</h4>
+                        <p>${data.targetCalories}</p>
+                        <small>kcal/dia</small>
+                    </div>
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ Importante:</strong> Este plano é uma orientação geral. Consulte um médico, nutricionista e educador físico antes de iniciar qualquer programa de emagrecimento, especialmente se você tiver condições de saúde pré-existentes.
+                </div>
+
+                <h2>🍽️ Plano Alimentar Diário</h2>
+                
+                <div class="info-card">
+                    <h3>Macronutrientes Diários:</h3>
+                    <p>🥩 Proteínas: ${data.protein}g (essencial para preservar massa muscular)</p>
+                    <p>🍞 Carboidratos: ${data.carbs}g (energia para treinos e metabolismo)</p>
+                    <p>🥑 Gorduras: ${data.fat}g (importantes para hormônios e saciedade)</p>
+                </div>
+
+                <h3>☀️ Café da Manhã (7h - 8h)</h3>
+                <div class="meal-item">
+                    ${data.mealPlan.breakfast.map(item => `<p>• ${item}</p>`).join('')}
+                </div>
+
+                <h3>🍎 Lanche da Manhã (10h - 10h30)</h3>
+                <div class="meal-item">
+                    ${data.mealPlan.snack1.map(item => `<p>• ${item}</p>`).join('')}
+                </div>
+
+                <h3>🍴 Almoço (12h - 13h)</h3>
+                <div class="meal-item">
+                    ${data.mealPlan.lunch.map(item => `<p>• ${item}</p>`).join('')}
+                </div>
+
+                <h3>🥤 Lanche da Tarde (15h - 16h)</h3>
+                <div class="meal-item">
+                    ${data.mealPlan.snack2.map(item => `<p>• ${item}</p>`).join('')}
+                </div>
+
+                <h3>🌙 Jantar (19h - 20h)</h3>
+                <div class="meal-item">
+                    ${data.mealPlan.dinner.map(item => `<p>• ${item}</p>`).join('')}
+                </div>
+
+                <h3>😴 Ceia (opcional - se sentir fome antes de dormir)</h3>
+                <div class="meal-item">
+                    ${data.mealPlan.snack3.map(item => `<p>• ${item}</p>`).join('')}
+                </div>
+
+                <div class="tip">
+                    <strong>💧 Hidratação:</strong> Beba pelo menos 2-3 litros de água por dia. A água ajuda no metabolismo, reduz a retenção de líquidos e aumenta a saciedade.
+                </div>
+
+                <h2>🏋️ Plano de Exercícios</h2>
+                
+                <h3>🏃 Exercícios Cardiovasculares</h3>
+                ${data.workoutPlan.cardio.map(ex => `
+                    <div class="exercise-item">
+                        <strong>${ex.name}</strong>
+                        <p>⏱️ Duração: ${ex.duration}</p>
+                        <p>📅 Frequência: ${ex.frequency}</p>
+                        <p>📝 ${ex.notes}</p>
+                    </div>
+                `).join('')}
+
+                <h3>💪 Exercícios de Força (Musculação)</h3>
+                <p><em>Faça estes exercícios 3-4 vezes por semana, com pelo menos 1 dia de descanso entre as sessões:</em></p>
+                ${data.workoutPlan.strength.map(ex => `
+                    <div class="exercise-item">
+                        <strong>${ex.name}</strong>
+                        <p>🔢 ${ex.reps}</p>
+                        <p>📝 ${ex.notes}</p>
+                    </div>
+                `).join('')}
+
+                <div class="tip">
+                    <strong>🔥 Dica importante:</strong> A musculação é essencial para o emagrecimento! Músculos queimam calorias mesmo em repouso. Combine cardio com treino de força para melhores resultados.
+                </div>
+
+                <h2>📋 Dicas Essenciais para o Sucesso</h2>
+                
+                <div class="info-card">
+                    <h3>✅ Hábitos Fundamentais:</h3>
+                    <p>😴 <strong>Durma 7-9 horas por noite:</strong> O sono inadequado aumenta hormônios da fome e reduz o metabolismo</p>
+                    <p>🧘 <strong>Gerencie o estresse:</strong> Cortisol alto dificulta a perda de peso. Pratique meditação ou yoga</p>
+                    <p>📱 <strong>Registre sua alimentação:</strong> Use apps como MyFitnessPal para controlar calorias</p>
+                    <p>⚖️ <strong>Pese-se 1x por semana:</strong> Sempre no mesmo dia e horário, em jejum</p>
+                    <p>📏 <strong>Tire medidas corporais:</strong> Cintura, quadril e coxa mensalmente</p>
+                    <p>🍽️ <strong>Coma devagar:</strong> Mastigue bem, leva 20 minutos para o cérebro sentir saciedade</p>
+                    <p>🚫 <strong>Evite:</strong> Refrigerantes, sucos industrializados, frituras, fast food, doces em excesso</p>
+                    <p>✅ <strong>Priorize:</strong> Alimentos naturais, frutas, vegetais, proteínas magras, grãos integrais</p>
+                </div>
+
+                <div class="tip">
+                    <strong>🎯 Meta Realista:</strong> Perder 0,5-1kg por semana é saudável e sustentável. Perda rápida geralmente resulta em perda de músculo e efeito sanfona.
+                </div>
+
+                <div class="warning">
+                    <strong>🚨 Quando Procurar um Profissional:</strong>
+                    <ul style="margin-top: 10px; line-height: 1.8;">
+                        <li>• Se você tem mais de 20kg para perder</li>
+                        <li>• Se possui doenças crônicas (diabetes, hipertensão, problemas cardíacos)</li>
+                        <li>• Se está grávida ou amamentando</li>
+                        <li>• Se tem histórico de transtornos alimentares</li>
+                        <li>• Se toma medicamentos regularmente</li>
+                        <li>• Se sente tontura, fraqueza excessiva ou dor durante exercícios</li>
+                    </ul>
+                </div>
+
+                <button onclick="window.location.reload()">🔄 Fazer Novo Cálculo</button>
+            `;
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+            document.getElementById('formSection').style.display = 'none';
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
